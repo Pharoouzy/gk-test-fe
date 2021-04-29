@@ -408,7 +408,19 @@ const HomePage = (props) => {
                 </div>
 
                 <div className="autocomplete-dropdown-container">
-                  {loading && <div>Loading...</div>}
+                  {loading && (
+                    <Typography
+                      variant="h5"
+                      style={{
+                        flexGrow: 1,
+                        textAlign: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Loading... &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </Typography>
+                  )}
                   {
                     <List>
                       {suggestions.map((suggestion) => {
