@@ -37,7 +37,7 @@ const MapContainer = (props) => {
       streetViewControl={false}
       fullscreenControl={false}
       mapTypeControl={false}
-      zoomControl={false}
+      zoomControl={true}
     >
       {/* drawing a polyline between pickup and dropoff from the pickupCoordinates and dropoffCoordinates */}
       <Polyline
@@ -55,7 +55,7 @@ const MapContainer = (props) => {
         id={1}
         icon={{
           url: "/marker.png",
-          scaledSize: new window.google.maps.Size(25, 25),
+          scaledSize: new window.google.maps.Size(28, 28),
         }}
       >
         <InfoWindow
@@ -77,7 +77,7 @@ const MapContainer = (props) => {
         id={2}
         icon={{
           url: "/marker.png",
-          scaledSize: new window.google.maps.Size(25, 25),
+          scaledSize: new window.google.maps.Size(28, 28),
         }}
       >
         <InfoWindow visible={true} position={props.dropoffCoordinates}>
