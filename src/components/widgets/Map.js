@@ -15,12 +15,12 @@ const MapContainer = (props) => {
 
   // centering the pickup location and dropoff location
   if (props.pickupCoordinates && props.dropoffCoordinates) {
-    const lat =
+    const latitude =
       (props.pickupCoordinates.lat + props.dropoffCoordinates.lat) / 2;
-    const lng =
+    const longitute =
       (props.pickupCoordinates.lng + props.dropoffCoordinates.lng) / 2;
     // centering the view with the pickup and dropoff coordinates
-    centered = { lat, lng };
+    centered = { lat: latitude, lng: longitute };
   }
 
   return (
