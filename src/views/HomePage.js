@@ -245,13 +245,8 @@ const HomePage = (props) => {
 
     const handleSelectPickup = (address) => {
       geocodeByAddress(address)
-        .then((results) => {
-          getLatLng(results[0]);
-          // console.log("RESSSSS", results);
-          // api().post("/locations", results[0]);
-        })
+        .then((results) => getLatLng(results[0]))
         .then((latLng) => {
-          console.log("LN", latLng);
           setPickupCoordinates(latLng);
           setPickupAddress(address);
           showMap();
@@ -478,6 +473,9 @@ const HomePage = (props) => {
 
   // component to display interface for dropoff details
   const dropoffPage = (props) => {
+    const checker = (e) => {
+      setCurrentLocation("none");
+    };
     const handleChangeDrop = (address) => {
       const formattedAddress = address.toLowerCase();
 
@@ -496,7 +494,7 @@ const HomePage = (props) => {
     };
 
     //OnSelect functionality executed when user confirms address, for values coming from autoComplete api
-    const handleSelectDrop = (address) => {
+    const handleSelectDropoff = (address) => {
       geocodeByAddress(address)
         .then((results) => getLatLng(results[0]))
         .then((latLng) => {
@@ -508,7 +506,7 @@ const HomePage = (props) => {
     };
 
     //OnSelect functionality executed when user confirms address, for values coming from database
-    const handleDropFromDB = (loc) => {
+    const handleDropoffFromDB = (loc) => {
       setDropoffCoordinates({ lat: loc.lat, lng: loc.lng });
 
       const addressBack = loc.address.replace(
@@ -521,6 +519,18 @@ const HomePage = (props) => {
       showMap();
     };
 
+    const selectFromCurrentLocation = () => {
+      axios(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocationCoordinates.lat},${currentLocationCoordinates.lng}&key=${constant.apiKey}`
+      )
+        .then((response) => response.data.results)
+        .then((result) => setDropoffAddress(result[0].formatted_address))
+        .then(showMap());
+      setDropoffCoordinates({
+        lat: currentLocationCoordinates.lat,
+        lng: currentLocationCoordinates.lng,
+      });
+    };
     // configure autocomplete options
     const searchOptions = {
       location: new google.maps.LatLng(
@@ -581,6 +591,7 @@ const HomePage = (props) => {
                 placeholder: "Dropoff address",
                 className: "location-search-input",
               }}
+              onFocus={(e) => checker(e)}
               onChange={(e) => handleChangeDrop(e.target.value)}
             />
             {searchData.map((loc) => {
@@ -588,7 +599,7 @@ const HomePage = (props) => {
                 <Box my={2}>
                   <ListItem
                     style={{ borderBottom: "1px solid #f1f1f1" }}
-                    onClick={() => handleDropFromDB(loc)}
+                    onClick={() => handleDropoffFromDB(loc)}
                   >
                     <ListItemAvatar>
                       <Avatar>
@@ -605,7 +616,7 @@ const HomePage = (props) => {
           <PlacesAutocomplete
             value={dropoffAddress}
             onChange={handleChangeDrop}
-            onSelect={handleSelectDrop}
+            onSelect={handleSelectDropoff}
             searchOptions={searchOptions}
           >
             {({
@@ -624,7 +635,22 @@ const HomePage = (props) => {
                     placeholder: "Dropoff address",
                   })}
                 />
-
+                <div
+                  style={{ display: currentLocation }}
+                  onClick={selectFromCurrentLocation}
+                >
+                  <ListItem style={{ borderBottom: "1px solid #f5f5f9" }}>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <LocationOn />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary="Current Location"
+                      secondary="Pick up from current location"
+                    />
+                  </ListItem>
+                </div>
                 <div className="autocomplete-dropdown-container">
                   {loading && <div>Loading...</div>}
                   {
