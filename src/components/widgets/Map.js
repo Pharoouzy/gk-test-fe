@@ -59,9 +59,10 @@ const MapContainer = (props) => {
         }}
       >
         <InfoWindow
+          pixelOffset={"0"}
           visible={true}
-          position={props.pickupCoordinates}
           marker={props.pickupCoordinates}
+          position={props.pickupCoordinates}
         >
           <div>
             <p>Pickup</p>
@@ -80,9 +81,14 @@ const MapContainer = (props) => {
           scaledSize: new window.google.maps.Size(28, 28),
         }}
       >
-        <InfoWindow visible={true} position={props.dropoffCoordinates}>
+        <InfoWindow
+          pixelOffset={"0"}
+          visible={true}
+          marker={props.dropoffCoordinates}
+          position={props.dropoffCoordinates}
+        >
           <div>
-            <p>Pickup</p>
+            <p>Dropoff</p>
           </div>
         </InfoWindow>
       </Marker>
